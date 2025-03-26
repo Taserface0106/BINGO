@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G-Bingo</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    margin: 20px;
+  }
+  #bingo {
+    display: grid;
+    grid-template-columns: repeat(5, 100px);
+    gap: 5px;
+  }
+  .bingo-cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .marked {
+    background-color: #a8d5a8;
+  }
+  .bingo {
+    background-color: #34a853;
+    color: white;
+  }
+  #bingo-alert {
+    color: red;
+    font-size: 24px;
+    margin: 20px;
+    visibility: hidden;
+  }
+</style>
+</head>
+<body>
+<h1>G-Bingo</h1>
+<div id="bingo-alert">BINGO!</div>
+<div id="bingo">
+  <div class="bingo-cell" onclick="toggleCell(this)">Kaddrin</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Tatei</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Frostpunk</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">MMMega</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Gag!</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Twuist</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Fideo</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Tokken</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Warcraft</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">KRapfen</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Honk</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">DLR</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">n Kumbl</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Lautstarkes Gelächter</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Schmatzen beim Arbeiten</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Asset</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">AsdRonaut</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Kommst grade mal rum?</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">cual</div>
+  <div class="bingo-cell" onclick="toggleCell(this)">Sgribbd</div>
+</div>
+
+<script>
+function toggleCell(cell) {
+  cell.classList.toggle('marked');
+  checkBingo();
+}
+
+function checkBingo() {
+  const bingoAlert = document.getElementById('bingo-alert');
+  const rows = 4;
+  const columns = 5;
+  const bingoGrid = document.getElementById('bingo');
+  const cells = Array.from(bingoGrid.children);
+  const isBingo = [];
+
+  // Check rows
+  for (let i = 0; i < rows; i++) {
+    const rowStart = i * columns;
+    const rowCells = cells.slice(rowStart, rowStart + columns);
+    isBingo.push(rowCells.every(cell => cell.classList.contains('marked')));
+  }
+
+  // Check columns
+  for (let i = 0; i < columns; i++) {
+    const columnCells = [];
+    for (let j = 0; j < rows; j++) {
+      columnCells.push(cells[i + j * columns]);
+    }
+    isBingo.push(columnCells.every(cell => cell.classList.contains('marked')));
+  }
+
+  if (isBingo.includes(true)) {
+    bingoAlert.style.visibility = 'visible';
+    cells.forEach((cell, index) => {
+      if (isBingo[Math.floor(index / columns)] || 
+          isBingo[rows + (index % columns)]) {
+        cell.classList.add('bingo');
+      }
+    });
+  } else {
+    bingoAlert.style.visibility = 'hidden';
+    cells.forEach(cell => cell.classList.remove('bingo'));
+  }
+}
+</script>
+</body>
+</html>
